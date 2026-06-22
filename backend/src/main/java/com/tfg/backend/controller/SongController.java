@@ -5,6 +5,7 @@ import com.tfg.backend.dto.SongRequestDTO;
 import com.tfg.backend.model.Song;
 import com.tfg.backend.service.SongService;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,8 @@ public class SongController {
         return songService.findAll();
     }
 
-    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/upload")
     public Song create(@RequestBody SongRequestDTO songRequest) {
         return songService.save(songRequest);
     }

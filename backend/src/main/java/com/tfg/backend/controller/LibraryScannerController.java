@@ -4,6 +4,7 @@ import com.tfg.backend.dto.ScanLibraryRequestDTO;
 import com.tfg.backend.service.LibraryScannerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +14,7 @@ public class LibraryScannerController {
     @Autowired
     private LibraryScannerService libraryScannerService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public void scanLibrary(@RequestBody ScanLibraryRequestDTO request) {
         libraryScannerService.scanLibrary(request.getPath());

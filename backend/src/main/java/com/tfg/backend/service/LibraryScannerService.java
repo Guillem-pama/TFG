@@ -35,6 +35,13 @@ public class LibraryScannerService {
     
         Path root = Paths.get(folderPath);
 
+        AppConfig config = configService.loadConfig();
+
+        if(config.getLibraryPath() != folderPath) {
+            config.setLibraryPath(folderPath);
+            configService.saveConfig(config);
+        }
+
         try {
             Files.walk(root)
                     .filter(Files::isRegularFile)
@@ -59,12 +66,6 @@ public class LibraryScannerService {
     private void processFile(Path path) {
 
         String filePath = path.toAbsolutePath().toString();
-
-        AppConfig config = configService.loadConfig();
-
-        config.setLibraryPath(filePath);
-
-        configService.saveConfig(config);
 
         if (songService.existsByFilePath(filePath)) {
             return;
